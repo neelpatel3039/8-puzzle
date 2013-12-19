@@ -18,7 +18,7 @@ Project has several methods to solve subproblems. The subproblems are:
     * Generate a heuristic function to get closest path to go to goal state.
     * Breadth First Search and Generating the Result.'''
 
-import math
+import math, sys
 
 #********************************#
 #                +---+---+---+   #
@@ -123,13 +123,12 @@ def inversions(current_state):
 
 def check_solubility(current_state):
     # Finds whether puzzle is available or not.
-    if (inversions(current_state) + int(current_state.index(0) / 3) + 1) % 2 == 1: #this part is probably wrong.
-        return True
+    if (inversions(current_state)) % 2 == 0: #this part is probably wrong. //+ int(current_state.index(0) / 3) + 1)
+        breadth_first_search(current_state)
         # "Total inversion is: "
         # + str(inversions(current_state))
         # + " + Blank tile is in index: "
         # + str(int(current_state.index(0) / 3)) + " ==> " + "Solvable."
-
     else:
         return "No Solution for this board."
 
@@ -235,37 +234,35 @@ def hamming_priority_function(legal_states):
 #------------------------------------- GO FOR GLORY WITH BFS (Breadth First Search) -
 def breadth_first_search(state):
 
-    if check_solubility(state) is not True:     # If state is not soluble E-E-EXXXXTERMINATES
-        return "Given board has no solution. 8-Puzzle will terminate now."
-
     print matrix_display(state)
     temp_solution = [state]
     explored_set = generate_new_states(state)
-
+    step = 0
     while goal_state:
+        step += 1
+
         # Comment outs are for checking results to compare them individually.
         # print "TEMP SOLUTION SET: ", temp_solution
         # print "EXPLORED SET: ", explored_set
         # print "Hamming Set: ", hamming_priority_function(explored_set)
         # print "Hamming Set CHOOOSEN: ", hamming_priority_function(explored_set).pop()
-        step = 1
         for i in explored_set:
-            step += 1
             explored_set += generate_new_states(i)
             x = hamming_priority_function(explored_set).pop()
 
             if x == goal_state:
                 print "\nSolved in {} step(s)\n".format(step)
-                return matrix_display(goal_state)
+                return matrix_display(x)
 
             elif x not in temp_solution:
                 temp_solution += [x]
                 explored_set = generate_new_states(x)
-                print matrix_display(x)
-
             else:
                 explored_set.pop(explored_set.index(x))
 
+            print matrix_display(x)
 
-board = int(raw_input("Please Enter A Board: "))
-print breadth_first_search(board)
+
+print "\n<Usage:> \n<Enter a board: 231456780>\n"
+board = raw_input("Enter a board: ")
+print check_solubility(map(int, board))
