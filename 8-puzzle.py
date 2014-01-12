@@ -1,4 +1,3 @@
-
 __author__ = 'Burak Tekin'
 __date__ = '19/12/2013'
 __contact_ = 'iletisim@buraktekin.net / tknbrk@gmail.com'
@@ -124,7 +123,7 @@ def inversions(current_state):
 def check_solubility(current_state):
     # Finds whether puzzle is available or not.
     if (inversions(current_state)) % 2 == 0: #this part is probably wrong. //+ int(current_state.index(0) / 3) + 1)
-        breadth_first_search(current_state)
+        best_first_search(current_state)
         # "Total inversion is: "
         # + str(inversions(current_state))
         # + " + Blank tile is in index: "
@@ -232,7 +231,7 @@ def hamming_priority_function(legal_states):
 
 
 #------------------------------------- GO FOR GLORY WITH BFS (Breadth First Search) -
-def breadth_first_search(state):
+def best_first_search(state):
 
     print matrix_display(state)
     temp_solution = [state]
